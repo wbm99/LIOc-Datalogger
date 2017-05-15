@@ -40,22 +40,22 @@ int main(void)
 	WDTCTL = WDTPW+WDTHOLD;                                /* Stop watchdog timer */
 
 	numArquivoDados = 0; 								   /* inicializando variável */
-	int *novoArquivo = 0, *cartaoCheio;                    /* se novoArquivo=0, o software está abrindo o seu primeiro arquivo */
+	int novoArquivo = 0, cartaoCheio;                    /* se novoArquivo=0, o software está abrindo o seu primeiro arquivo */
 
 	preparacao();
 
-	while(!(*novoArquivo))
+	while(!(novoArquivo))
 	{
 		/* se pre_aquisicao retornar 3 (escolhido), significa que o cartão está cheio, logo, não devo realizar aquisição. O parâmetro novoArquivo informa a pre_aquisicao,
 		   se o software está abrindo o seu primeiro arquivo, necessitando ou não de configurações iniciais do Conversor AD */
-		if((pre_aquisicao(novoArquivo)) != 3)
+		if((pre_aquisicao(&novoArquivo)) != 3)
 				aquisicao();
 		else
-			*cartaoCheio = 1;
-		if(finalizacao(cartaoCheio))
-			*novoArquivo = 0;
+			cartaoCheio = 1;
+		if(finalizacao(&cartaoCheio))
+			novoArquivo = 0;
 		else
-		*novoArquivo = 1; /* se finalizacao retornar 1, significa que não há mais medições a serem feitas, seja porque foi alcançado o objetivo da configuração, ou porque o cartão encheu 100%. */
+		novoArquivo = 1; /* se finalizacao retornar 1, significa que não há mais medições a serem feitas, seja porque foi alcançado o objetivo da configuração, ou porque o cartão encheu 100%. */
 	}
 
 	return 0;
@@ -279,7 +279,7 @@ int aquisicao(void)
 
 int finalizacao(int *cartaoCheio)
 {
-	if(*cartaoCheio !=1){
+	if((*cartaoCheio) !=1){
 		errCode = f_close(&file);								/* close the file */
 		if(numArquivoDados < numeroMedicoes)   /* Retorna para preAquisicao se ainda faltam arquivos a serem gravados. Caso contrário, desmonta cartão. Falta Desenvolvimento abaixo */
 			return 1;
