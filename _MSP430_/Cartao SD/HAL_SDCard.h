@@ -11,7 +11,6 @@
  *
  *      Função original da TI adaptada ao projeto do datalogger
  *
- /*******************************************************************************
  *
  *  HAL_SDCard.h
  *

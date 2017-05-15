@@ -18,7 +18,7 @@
 #include <string.h>                                        /* Manipulação de strings */
 
 /* Meus includes */
-#include <adc.h> 										   /* Referências do ADC criadas */
+#include "Conversor AD/adc.h" 										   /* Referências do ADC criadas */
 #include "driverlib.h"									   /* Biblioteca do Microcontrolador MSP430 com funções para mais fácil acesso */
 #include "funcoes.h" 									   /* Funções criadas para esse programa */
 #include "../Cartao SD/funcoes.h" 						   /* Reundância criada automaticamente pelo CCS */
@@ -33,8 +33,6 @@ int finalizacao(int *cartaoCheio);
 
 /* Funções auxiliares */
 int arquivoAtual(char*);  								   /* atualiza o nome do arquivo atual. Ex: dados23 */
-
-TESTANDO COMMIT
 
 int main(void)
 {
