@@ -6,7 +6,7 @@
  * Projeto: Datalogger para Bioacústica Submarina
  *
  *      Created on: 10/01/2017
- *      Last Update on: 11/05/2017
+ *      Last Update on: 15/05/2017
  *      Author: William Barbosa de Macedo
  *
  *      Obs.: Comentários originais dos códigos da Texas Instruments em inglês. Comentários do autor em português.
@@ -18,12 +18,12 @@
 #include <string.h>                                        /* Manipulação de strings */
 
 /* Meus includes */
-#include "Conversor AD/adc.h" 										   /* Referências do ADC criadas */
-#include "driverlib.h"									   /* Biblioteca do Microcontrolador MSP430 com funções para mais fácil acesso */
-#include "funcoes.h" 									   /* Funções criadas para esse programa */
-#include "../Cartao SD/funcoes.h" 						   /* Reundância criada automaticamente pelo CCS */
-#include "ff.h"                                            /* Funções da fatFS para manipulação do cartão SD */
-#include "../Cartao SD/ff.h"                               /* Reundância criada automaticamente pelo CCS */
+#include "Conversor AD/adc.h" 						/* Referências do ADC criadas */
+#include "driverlib.h"								/* Biblioteca do Microcontrolador MSP430 com funções para mais fácil acesso */
+#include "funcoes.h" 					            /* Funções criadas para esse programa */
+#include "Cartao SD/funcoes.h" 						/* Redundância criada automaticamente pelo CCS */
+#include "ff.h"                                     /* Funções da fatFS para manipulação do cartão SD */
+#include "Cartao SD/ff.h"                           /* Redundância criada automaticamente pelo CCS */
 
 /* Declaração das funções principais com base no fluxograma */
 int preparacao(void);
@@ -32,7 +32,7 @@ int aquisicao(void);
 int finalizacao(int *cartaoCheio);
 
 /* Funções auxiliares */
-int arquivoAtual(char*);  								   /* atualiza o nome do arquivo atual. Ex: dados23 */
+int arquivoAtual(char*);  						    /* atualiza o nome do arquivo atual. Ex: dados23 */
 
 int main(void)
 {
