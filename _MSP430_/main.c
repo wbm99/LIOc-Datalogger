@@ -34,6 +34,7 @@ int finalizacao(int *cartaoCheio);
 /* Funções auxiliares */
 int arquivoAtual(char*);  								   /* atualiza o nome do arquivo atual. Ex: dados23 */
 
+TESTANDO COMMIT
 
 int main(void)
 {
