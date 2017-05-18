@@ -112,6 +112,7 @@ int preparacao(void)
 		i++;
 		tipoGravacao = buffer[i]-48;
 		modoAmostragem = buffer[i+3]-48;
+		modoAmostragem = 2; /* PARA DEBUG. RETIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 		restricao = buffer[i+6]-48;
 		i=15; j=0; 											/* indexador do buffer para detectar fim de linha e consequente fim do parâmetro de mais de um dígito */
 
@@ -254,26 +255,39 @@ int aquisicao(void)
 	unsigned int int_size;                                  /* Variável para guardar tamanho da amostra a ser gravada */
 	int_size = sizeof(vetorResultados);
 
-	while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
+	/* Cada vez que a função get_adcX é executada, ela preenche a variável vetorResultados com 2048 amostras. Logo em seguida, se faz necessário o armazenamento no microSD */
+
+	if(modoAmostragem==1)
 	{
-		/* Cada vez que a função get_adcX é executada, ela preenche a variável vetorResultados com 2048 amostras. Logo em seguida, se faz necessário o armazenamento no microSD */
-		if(modoAmostragem){
+		while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
+		{
 			get_adc1();
-	     	f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+		    f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+			contador++; /* sinaliza o fim de uma aquisição */
 		}
-		if(modoAmostragem==2){
-			get_adc2();
-			f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+	}
+	if(modoAmostragem==2)
+	{
+		while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
+		{
+			get_adc1();
+		    f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+			contador++; /* sinaliza o fim de uma aquisição */
 		}
-		if(modoAmostragem==3){
-			get_adc3();
-			f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+	}
+	if(modoAmostragem==3)
+	{
+		while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
+		{
+			get_adc1();
+		    f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
+			contador++; /* sinaliza o fim de uma aquisição */
 		}
-		contador++; /* sinaliza o fim de uma aquisição */
+	}
+
 
 		//if(contador==1000 || contador==10000 || contador==30000 || contador ==50000) // TESTE
 		//	contador = contador; // debug
-	}
 	return 0;
 } /* Fim da aquisição */
 
