@@ -32,14 +32,14 @@ int aquisicao(void);
 int finalizacao(int *cartaoCheio);
 
 /* Funções auxiliares */
-int arquivoAtual(char*);  						    /* atualiza o nome do arquivo atual. Ex: dados23 */
+int arquivoAtual(char*);  						    	 /* atualiza o nome do arquivo atual. Ex: dados23 */
 
 int main(void)
 {
 	/* Desativa o watchdog (padrão) */
-	WDTCTL = WDTPW+WDTHOLD;                                /* Stop watchdog timer */
+	WDTCTL = WDTPW+WDTHOLD;                              /* Stop watchdog timer */
 
-	numArquivoDados = 0; 								   /* inicializando variável */
+	numArquivoDados = 0; 								 /* inicializando variável */
 	int novoArquivo = 0, cartaoCheio;                    /* se novoArquivo=0, o software está abrindo o seu primeiro arquivo */
 
 	preparacao();
@@ -52,7 +52,7 @@ int main(void)
 				aquisicao();
 		else
 			cartaoCheio = 1;
-		if(finalizacao(&cartaoCheio))
+		if(finalizacao(&cartaoCheio) == 1)
 			novoArquivo = 0;
 		else
 		novoArquivo = 1; /* se finalizacao retornar 1, significa que não há mais medições a serem feitas, seja porque foi alcançado o objetivo da configuração, ou porque o cartão encheu 100%. */
@@ -112,7 +112,7 @@ int preparacao(void)
 		i++;
 		tipoGravacao = buffer[i]-48;
 		modoAmostragem = buffer[i+3]-48;
-		modoAmostragem = 2; /* PARA DEBUG. RETIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+		modoAmostragem = 1; /* PARA DEBUG. RETIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 		restricao = buffer[i+6]-48;
 		i=15; j=0; 											/* indexador do buffer para detectar fim de linha e consequente fim do parâmetro de mais de um dígito */
 
@@ -173,7 +173,7 @@ int preparacao(void)
 		/* Os parâmetros são separados por 2 bytes ENTRE SI. Isto decorre pois são separados por \n\c no arquivo .txt. Arquivo Dos\Windows */
 		/* Parâmetros de mais de um dígito (ex: 15, 150) passam por uma lógica de procura ao \n, para ser indexado na variável inteira do código e ser manipulado */
 
-		errCode = f_close(&file);   /* fechando arquivo de configuração */
+		errCode = f_close(&file);   						/* fechando arquivo de configuração */
 
         if(errCode != FR_OK)
         result=0;                                           //used as a debugging flag
@@ -190,11 +190,11 @@ int pre_aquisicao(int *novoArquivo)
 	unsigned long int resultArmazenamento;
 	int result=1;
 
-	maxAquisicoes = 100000;					 /* a ser determinado! */
+	maxAquisicoes = 100000;					 				/* a ser determinado! */
 
 	if(!(*novoArquivo))
 	{
-		initCLK();        					/* Inicia os Clocks - Todos no máximo. */
+		initCLK();        									/* Inicia os Clocks - Todos no máximo. */
 		/* inicio config. aquisicao */
 
 		/* Configurando parâmetros de aquisicao, conforme o modo de aquisição (taxa de amostragem, tempo de hold, clock, ...) especificado em cfg.txt */
@@ -270,7 +270,7 @@ int aquisicao(void)
 	{
 		while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
 		{
-			get_adc1();
+			get_adc2();
 		    f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
 			contador++; /* sinaliza o fim de uma aquisição */
 		}
@@ -279,7 +279,7 @@ int aquisicao(void)
 	{
 		while((numeroAquisicoes > contador) && (maxAquisicoes > contador))
 		{
-			get_adc1();
+			get_adc3();
 		    f_write(&file, (void*) vetorResultados, int_size , bytesWritten);
 			contador++; /* sinaliza o fim de uma aquisição */
 		}
