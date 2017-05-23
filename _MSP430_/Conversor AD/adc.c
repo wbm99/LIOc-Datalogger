@@ -166,7 +166,7 @@ int get_adc1 (void)
 	{
 		// Start a single conversion, no repeating or sequences.
 		ADC12_A_startConversion (ADC12_A_BASE,
-				ADC12_A_MEMORY_0,
+				ADC12_A_MEMORY_1,
 				ADC12_A_SINGLECHANNEL);    /* único canal, várias conversões */
 
 		// Wait for the Interrupt Flag to assert at LPM0
@@ -263,7 +263,7 @@ void ADC12_A_ISR(void)                    /* Flag ADC12IFG0 gerou a interrupção,
 	    		break;
 
 	    case  8:            //Vector  8:  ADC12IFG1
-	    		resultadoGlobal = (ADC12_A_getResults(ADC12_A_BASE,ADC12_A_MEMORY_0)); 	/* pegando os resultados e colocando na variável temporária de resultado */
+	    		resultadoGlobal = (ADC12_A_getResults(ADC12_A_BASE,ADC12_A_MEMORY_1)); 	/* pegando os resultados e colocando na variável temporária de resultado */
     			GPIO_toggleOutputOnPin(GPIO_PORT_P3,GPIO_PIN7);
 	    		//Exit active CPU
 	    		__bic_SR_register_on_exit(LPM0_bits);
