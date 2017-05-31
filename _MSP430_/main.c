@@ -6,7 +6,7 @@
  * Projeto: Datalogger para Bioacústica Submarina
  *
  *      Created on: 10/01/2017
- *      Last Update on: 15/05/2017
+ *      Last Update on: 31/05/2017
  *      Author: William Barbosa de Macedo
  *
  *      Obs.: Comentários originais dos códigos da Texas Instruments em inglês. Comentários do autor em português.
@@ -224,11 +224,27 @@ int pre_aquisicao(int *novoArquivo)
     /* Se tipo2: loop de teste de limiar. Desenvolvimento futuro: implementação com interrupção */
     if(tipoAquisicao==2)
     {
-    	do
+    	if(modoAmostragem==1)
     	{
-    		get_adc2();  /* errado: fazer get_adcx !!!! */
-
-    	} while(vetorResultados[1000] < limiar);  /* Teste de limiar com uma das amostras. Posição 1000 das 2048 entradas. */
+    		do
+    		{
+    			get_adc1();
+    		} while(vetorResultados[1000] < limiar);  /* Teste de limiar com uma das amostras. Posição 1000 das 2048 entradas. */
+    	}
+    	if(modoAmostragem==1)
+    	{
+    		do
+    	    {
+    			get_adc2();
+    	    } while(vetorResultados[1000] < limiar);  /* Teste de limiar com uma das amostras. Posição 1000 das 2048 entradas. */
+    	}
+    	if(modoAmostragem==1)
+    	{
+    		do
+    		{
+    		    get_adc3();
+    		} while(vetorResultados[1000] < limiar);  /* Teste de limiar com uma das amostras. Posição 1000 das 2048 entradas. */
+    	}
     }
 
     /* fim config. aquisicao */
