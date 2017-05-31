@@ -9,7 +9,7 @@
  * 	 Aquisição e Conversão Digital de sinal analógico da porta 6.0 (porta A0) e, posteriormente, A0, A1 e A2.
  *
  *      Created on: 03/06/2016
- *      Last Update on: 10/03/2017
+ *      Last Update on: 31/05/2017
  *      Author: William Barbosa de Macedo
  */
 
