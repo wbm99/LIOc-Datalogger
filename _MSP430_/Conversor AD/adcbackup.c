@@ -9,7 +9,7 @@
  * 	 Aquisição e Conversão Digital de dado analógico da porta 6.0 (porta A0)
  *
  *      Created on: 03/06/2016
- *      Last Update on: 03/01/2017
+ *      Last Update on: 31/05/2017
  *      Author: William Barbosa de Macedo
  */
 

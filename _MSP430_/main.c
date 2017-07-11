@@ -6,7 +6,7 @@
  * Projeto: Datalogger para Bioacústica Submarina
  *
  *      Created on: 10/01/2017
- *      Last Update on: 31/05/2017
+ *      Last Update on: 11/07/2017
  *      Author: William Barbosa de Macedo
  *
  *      Obs.: Comentários originais dos códigos da Texas Instruments em inglês. Comentários do autor em português.
@@ -39,9 +39,16 @@ int main(void)
 	/* Desativa o watchdog (padrão) */
 	WDTCTL = WDTPW+WDTHOLD;                              /* Stop watchdog timer */
 
+	GPIO_setAsOutputPin(GPIO_PORT_P4,GPIO_PIN7); /* Configurando GPIO para oscilar na frequência de amostragem (Fórum e2e - Texas Instruments) */
+	GPIO_setOutputLowOnPin(GPIO_PORT_P4,GPIO_PIN7); /* Inicializando a porta GPIO em low state */
+
+	//GPIO_setAsOutputPin(GPIO_PORT_P1,GPIO_PIN0); /* Configurando GPIO para oscilar na frequência de amostragem (Fórum e2e - Texas Instruments) */
+	//GPIO_setOutputLowOnPin(GPIO_PORT_P1,GPIO_PIN0); /* Inicializando a porta GPIO em low state */
+
 	numArquivoDados = 0; 								 /* inicializando variável */
 	int novoArquivo = 0, cartaoCheio;                    /* se novoArquivo=0, o software está abrindo o seu primeiro arquivo */
 
+	//pot();
 	preparacao();
 
 	while(!(novoArquivo))
@@ -57,8 +64,10 @@ int main(void)
 		else
 		novoArquivo = 1; /* se finalizacao retornar 1, significa que não há mais medições a serem feitas, seja porque foi alcançado o objetivo da configuração, ou porque o cartão encheu 100%. */
 	}
-
+	GPIO_setOutputLowOnPin(GPIO_PORT_P4,GPIO_PIN7);
 	return 0;
+
+    __bis_SR_register(LPM0_bits + GIE);
 } /* fim da main */
 
 
@@ -76,10 +85,21 @@ int preparacao(void)
     errCode = FR_NOT_READY; 								/* Variáel de resultado para as funções fatFS. Setada inicialmente como NOT READY */
 
     while (errCode != FR_OK)
-    {                                                       //go until f_open returns FR_OK (function successful)
-    	errCode = f_mount(0, &fatfs);                       //mount drive number 0 - cartão montado
-        errCode = f_open(&file, "cfg.txt", FA_READ);	    //abre arquivo de configuração. Somente leitura
-        errCode = f_sync(&file);							//f_sync no arquivo de configuração (opcional. garante mais segurança na abertura do arquivo)
+    {
+    	//go until f_open returns FR_OK (function successful)
+        while (errCode != FR_OK)
+        {
+        	errCode = f_mount(0, &fatfs);                       //mount drive number 0 - cartão montado
+        	errCode = f_open(&file, "cfg.txt", FA_READ);	    //abre arquivo de configuração. Somente leitura
+        	errCode = f_sync(&file);							//f_sync no arquivo de configuração (opcional. garante mais segurança na abertura do arquivo)
+        }
+        if(errCode == FR_OK)
+        {
+        	//GPIO_setOutputHighOnPin(GPIO_PORT_P1,GPIO_PIN0);
+        	GPIO_setOutputHighOnPin(GPIO_PORT_P4,GPIO_PIN7);
+
+        }
+
 
         for(cont=0;cont<50;cont++)                          /* clearing the buffer vector, avoiding mistakes within old entries */
         {
@@ -112,7 +132,7 @@ int preparacao(void)
 		i++;
 		tipoGravacao = buffer[i]-48;
 		modoAmostragem = buffer[i+3]-48;
-		modoAmostragem = 1; /* PARA DEBUG. RETIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+		modoAmostragem = 2; /* PARA DEBUG. RETIRAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 		restricao = buffer[i+6]-48;
 		i=15; j=0; 											/* indexador do buffer para detectar fim de linha e consequente fim do parâmetro de mais de um dígito */
 

@@ -52,6 +52,7 @@ FRESULT WriteFile(char*, char*, WORD);
 void fat_init(void);
 void USBHAL_initClocks(uint32_t mclkFreq);
 void iniciarTimer(void);
+void pot(void);
 
 
 #endif /* FUNCOES_H_ */
